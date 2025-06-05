@@ -14,10 +14,10 @@ Here is the official PyTorch implementation of *Lightweight Sample-wise Multimod
 
 ## Methodology
 
-<!-- ![Figure 1](figure/figure_1.pdf) -->
-<iframe src="figure/figure_1.pdf" width="80%" height="500px"></iframe>
-
- Illustrates multimodal interactions at the sample level, showcasing redundancy (\(r\)), uniqueness (\(u_1, u_2\)), and synergy (\(s\)) that constitute multimodal information \(i(x_1, x_2; y)\).
+<div align="center">
+  <img src="figure/figure_1.jpg" width="50%">
+</div>
+Illustrates multimodal interactions at the sample level, showcasing redundancy $r$, uniqueness $u_1, u_2$, and synergy $s$ that constitute multimodal information $i(x_1, x_2; y)$.
 
 LSMI aims to distinguish task-relevant information generated from two modalities, \(x_1, x_2\), with respect to a target \(y\), into:
 *   **Redundancy (\(r\))**: Information shared between \(x_1\) and \(x_2\) about \(y\).
@@ -33,20 +33,23 @@ where \(i(x;y)\) is the pointwise mutual information.
 
 ### Redundancy-based Interaction Framework
 
-To uniquely determine these interactions, we focus on defining redundancy (\(r\)) from a pointwise perspective, 这可以被用下图所示信息分解框架来获得. 
+To uniquely determine these interactions, we focus on defining redundancy (\(r\)) from a pointwise perspective. The redundancy interaction can be obtained by the information decomposition framework as shown in the following figure. 
 
-![Figure 2](./figure/figure_2.pdf)
-* Depicts the event-level redundancy information estimation framework. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
+<div align="center">
+  <img src="./figure/figure_2.jpg" alt="Figure 2: Redundancy Estimation Framework" width="80%">
+</div>
+
+Depicts the event-level redundancy information estimation framework. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
    
 
 
 1.  **Challenge with Pointwise Mutual Information**: Pointwise mutual information \(i(x; y)\) can be negative, violating monotonicity required for set-theoretic decomposition of redundancy.
 2.  **Solution**: We decompose information into two positive components, \(i^+(x; y)\) and \(i^-(x; y)\), which adhere to monotonicity:
-    \[ i(x; y) = i^+(x; y) - i^-(x; y) \]
-    where:
     \[ i^+(x; y) = h(x) = -\log p(x) \]
     \[ i^-(x; y) = h(x|y) = -\log p(x|y) \]
-3.  **Pointwise Redundancy**: Redundancies for each component are defined as:
+and 
+    \[ i(x; y) = i^+(x; y) - i^-(x; y) \]
+1.  **Pointwise Redundancy**: Redundancies for each component are defined as:
     \[ r^+(x_1; x_2; y) = \min(i^+(x_1; y), i^+(x_2; y)) \]
     \[ r^-(x_1; x_2; y) = \min(i^-(x_1; y), i^-(x_2; y)) \]
     The overall pointwise redundancy is:

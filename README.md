@@ -9,7 +9,7 @@ Our work introduces the Lightweight Sample-wise Multimodal Interaction (LSMI) Es
 
 **Accepted by:** Forty-Second International Conference on Machine Learning (ICML 2025)
 
-## Methodology
+## Method
 
 LSMI aims to decompose the task-relevant information from two modalities, $x_1$ and $x_2$, with respect to a target $y$, into three distinct components:
 *   **Redundancy ($r$)**: Information about $y$ shared between $x_1$ and $x_2$.

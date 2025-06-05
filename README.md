@@ -1,112 +1,78 @@
 # Official PyTorch implementation of LSMI_Estimator
 
-Here is the official PyTorch implementation of *Lightweight Sample-wise Multimodal Interaction* (LSMI) Estimator proposed in ''*Efficient Quantification of Multimodal Interaction at Sample Level*'', which is efficient multimodal interaction estimator at the sample level distinguishing redundancy, uniqueness and synergy. Please refer to our ICML 2025 paper for more details.
+This repository provides the official PyTorch implementation for the paper **"Efficient Quantification of Multimodal Interaction at Sample Level"** (ICML 2025).
+Our work introduces the Lightweight Sample-wise Multimodal Interaction (LSMI) Estimator, a method to efficiently quantify and distinguish redundancy, uniqueness, and synergy at the sample level in multimodal data.
 
-**Paper Title: "Efficient Quantification of Multimodal Interaction at Sample Level"**
+**Paper Title:** "Efficient Quantification of Multimodal Interaction at Sample Level"
 
+**Authors:** [Zequn Yang](https://bjlfzs.github.io/), [Hongfa Wang](https://scholar.google.com.hk/citations?hl=zh-CN&user=q9Fn50QAAAAJ), [Di Hu](https://dtaoo.github.io/index.html)
 
-
-**Authors: [Zequn Yang](https://bjlfzs.github.io/), [Hongfa Wang](https://scholar.google.com.hk/citations?hl=zh-CN&user=q9Fn50QAAAAJ), [Di Hu](https://dtaoo.github.io/index.html)**
-
-**Accepted by: Forty-Second International Conference on Machine Learning (ICML 2025)**
-
-
+**Accepted by:** Forty-Second International Conference on Machine Learning (ICML 2025)
 
 ## Methodology
 
-<div align="center">
-  <img src="figure/figure_1.jpg" width="50%">
-</div>
-Illustrates multimodal interactions at the sample level, showcasing redundancy $r$, uniqueness $u_1, u_2$, and synergy $s$ that constitute multimodal information $i(x_1, x_2; y)$.
+LSMI aims to decompose the task-relevant information from two modalities, \(x_1\) and \(x_2\), with respect to a target \(y\), into three distinct components:
+*   **Redundancy (\(r\))**: Information about \(y\) shared between \(x_1\) and \(x_2\).
+*   **Uniqueness (\(u_1, u_2\))**: Information about \(y\) unique to \(x_1\) (or \(x_2\)).
+*   **Synergy (\(s\))**: Information about \(y\) that emerges only when \(x_1\) and \(x_2\) are considered jointly.
 
-LSMI aims to distinguish task-relevant information generated from two modalities, \(x_1, x_2\), with respect to a target \(y\), into:
-*   **Redundancy (\(r\))**: Information shared between \(x_1\) and \(x_2\) about \(y\).
-*   **Uniqueness (\(u_1, u_2\))**: Information unique to \(x_1\) (or \(x_2\)) about \(y\).
-*   **Synergy (\(s\))**: Information that emerges only when \(x_1\) and \(x_2\) are considered together about \(y\).
-
-These pointwise interactions satisfy:
+These pointwise interactions are related by the following equations:
 \[ i(x_1; y) = r + u_1 \]
 \[ i(x_2; y) = r + u_2 \]
 \[ i(x_1, x_2; y) = r + u_1 + u_2 + s, \]
+where \(i(X;Y)\) denotes the pointwise mutual information.
 
-where \(i(x;y)\) is the pointwise mutual information.
+<div align="center">
+  <img src="figure/figure_1.jpg" width="50%">
+  <p>Figure 1: Illustration of sample-level multimodal interactions, depicting redundancy ($r$), uniqueness ($u_1, u_2$), and synergy ($s$) as components of the total multimodal information $i(x_1, x_2; y)$.</p>
+</div>
 
-### Redundancy-based Interaction Framework
-
-To uniquely determine these interactions, we focus on defining redundancy (\(r\)) from a pointwise perspective. The redundancy interaction can be obtained by the information decomposition framework as shown in the following figure. 
+The unique determination of these interactions hinges on a pointwise definition of redundancy (\(r\)). Redundancy is derived using an information decomposition framework, as illustrated in Figure 2. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
 
 <div align="center">
   <img src="./figure/figure_2.jpg" alt="Figure 2: Redundancy Estimation Framework" width="80%">
+  <p>Figure 2: The Redundancy Estimation Framework. Information flow is traced through a lattice structure to identify redundant components, ensuring monotonic decrease of information quantities along the decomposition path.</p>
 </div>
 
-Depicts the event-level redundancy information estimation framework. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
-   
+Our approach estimates redundancy by leveraging information flow, ensuring monotonicity. Specifically, pointwise mutual information is decomposed into two parts satisfying the framework; redundancy is then determined for each part and combined to yield the overall redundancy interaction.
 
+For continuous distributions, interactions are quantified using KNIFE (Pichler et al., 2022) for efficient differential entropy estimation. This provides \(h_{\theta}(x)\) as an estimate for \(h(x)\) (the \(i^+\) component) and facilitates the estimation of the \(i^-\) component. This lightweight methodology is well-suited for sample-level analysis.
 
-1.  **Challenge with Pointwise Mutual Information**: Pointwise mutual information \(i(x; y)\) can be negative, violating monotonicity required for set-theoretic decomposition of redundancy.
-2.  **Solution**: We decompose information into two positive components, \(i^+(x; y)\) and \(i^-(x; y)\), which adhere to monotonicity:
-    \[ i^+(x; y) = h(x) = -\log p(x) \]
-    \[ i^-(x; y) = h(x|y) = -\log p(x|y) \]
-and 
-    \[ i(x; y) = i^+(x; y) - i^-(x; y) \]
-1.  **Pointwise Redundancy**: Redundancies for each component are defined as:
-    \[ r^+(x_1; x_2; y) = \min(i^+(x_1; y), i^+(x_2; y)) \]
-    \[ r^-(x_1; x_2; y) = \min(i^-(x_1; y), i^-(x_2; y)) \]
-    The overall pointwise redundancy is:
-    \[ r(x_1; x_2; y) = r^+(x_1; x_2; y) - r^-(x_1; x_2; y) \]
-This definition of \(r\) allows for the unique determination of \(u_1, u_2,\) and \(s\).
+## Getting Started
 
-### Lightweight Interaction Estimation
-
-To quantify interactions for continuous distributions:
-1.  **Entropy Estimation**: We use KNIFE (Pichler et al., 2022) for efficient differential entropy estimation, providing \(h_{\theta}(x)\) as an estimate for \(h(x)\) (the \(i^+\) component).
-    \[ \mathbb{E} [h_{\theta}(x)] = \mathbb{E} [h(x)] + D_{KL}(p(x)||p_{\theta}(x)) \geq H(X) \]
-2.  **Estimating \(i^-\)**: Once unimodal discriminative models \(p(y|x_m)\) are determined, the \(i^-\) component is estimated as:
-    \[ i^-(x_m ; y) = h_{\theta_m} (x_m) -h(y) - \log p(y|x_m) \]
-This approach avoids modeling a base distribution, making it lightweight and suitable for sample-level estimation.
-
-(Our framework can be naturally extended to handle multiple modalities; see Appendix A of the paper for details.)
-
-### Visual Overview
-
-
-  
-
-
-
-## Get Started
-### Requirements 
+### Requirements
 - Python 3.8
 <pre><code>
 pip install -r requirements.txt
 </code></pre>
 
-### Run
-You can simply run the demo of LSMI_Estimator using:  
+### Running the Demo
+To run the LSMI_Estimator demo:
 <pre><code>
 python main_lsmi.py
 </code></pre>
-You can adjust the algorithm's detailed setting by modifying parameters. And alternate datasets can also be utilized.
+The `main_lsmi.py` script is the primary entry point for experiments. Algorithm parameters and dataset configurations can be modified within this script.
 
-<!-- ### Data Preparation
-*(If LSMI requires specific data preparation, describe it here. Otherwise, you can remove this subsection or state that standard datasets can be used.)*
-The original datasets mentioned in the broader context of related research include:
-[Kinetics-Sounds](https://github.com/cvdfoundation/kinetics-dataset).
-[UCF101](https://www.crcv.ucf.edu/data/UCF101.php),
-[VGGSound](https://www.robots.ox.ac.uk/~vgg/data/vggsound/),
-Please clarify if these or other specific datasets and preprocessing are needed for LSMI. -->
+### Data Preparation
+Data for the LSMI Estimator must be provided as a PyTorch tensor file (`.pt`). The `get_loader` function in `utils.py` handles data loading from this file. The file should contain a dictionary with the following keys for training and validation sets:
 
+-   `'train_modal_1_features'`: Features for the first modality (training set).
+-   `'train_modal_2_features'`: Features for the second modality (training set).
+-   `'train_targets'`: Target labels (training set).
+-   `'val_modal_1_features'`: Features for the first modality (validation set).
+-   `'val_modal_2_features'`: Features for the second modality (validation set).
+-   `'val_targets'`: Target labels (validation set).
 
-## Usage
+An example script, `gaussian_data.py`, demonstrates the generation of synthetic data from a mixed Gaussian distribution.
 
-<!-- ```python -->
-
-
+For custom or complex datasets:
+1.  Extract features (e.g., using pre-trained models) to obtain unimodal and multimodal representations.
+2.  Save these features in the specified PyTorch tensor file format (`.pt`) with the keys listed above.
+3.  Adapt the data loading process by modifying the `data_generate` function in `main_lsmi.py` as necessary.
 
 ## Citation
 
-If you find this work useful, please consider citing it.
-
+If you find this work useful in your research, please consider citing our paper:
 <pre><code>
 @inproceedings{yang2025Efficient,
   title={Efficient Quantification of Multimodal Interaction at Sample Level},
@@ -118,10 +84,9 @@ If you find this work useful, please consider citing it.
 
 ## Acknowledgement
 
-This work is sponsored by CCF-Tencent Rhino-Bird Open Research Fund, the National Natural Science Foundation of China (Grant No.62106272), the Public Computing Cloud of Renmin University of China, and the fund for building world-class universities (disciplines) of Renmin University of China.
+This work is sponsored by the CCF-Tencent Rhino-Bird Open Research Fund, the National Natural Science Foundation of China (Grant No. 62106272), the Public Computing Cloud of Renmin University of China, and the fund for building world-class universities (disciplines) of Renmin University of China.
 
-
-## Contact us
+## Contact
 
 If you have any detailed questions or suggestions, you can email us:
-**zqyang@ruc.edu.cn** 
+**zqyang@ruc.edu.cn**

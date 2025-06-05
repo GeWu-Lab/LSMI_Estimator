@@ -11,23 +11,23 @@ Our work introduces the Lightweight Sample-wise Multimodal Interaction (LSMI) Es
 
 ## Methodology
 
-LSMI aims to decompose the task-relevant information from two modalities, \(x_1\) and \(x_2\), with respect to a target \(y\), into three distinct components:
-*   **Redundancy (\(r\))**: Information about \(y\) shared between \(x_1\) and \(x_2\).
-*   **Uniqueness (\(u_1, u_2\))**: Information about \(y\) unique to \(x_1\) (or \(x_2\)).
-*   **Synergy (\(s\))**: Information about \(y\) that emerges only when \(x_1\) and \(x_2\) are considered jointly.
+LSMI aims to decompose the task-relevant information from two modalities, $x_1$ and $x_2$, with respect to a target $y$, into three distinct components:
+*   **Redundancy ($r$)**: Information about $y$ shared between $x_1$ and $x_2$.
+*   **Uniqueness ($u_1, u_2$)**: Information about $y$ unique to $x_1$ (or $x_2$).
+*   **Synergy ($s$)**: Information about $y$ that emerges only when $x_1$ and $x_2$ are considered jointly.
 
 These pointwise interactions are related by the following equations:
-\[ i(x_1; y) = r + u_1 \]
-\[ i(x_2; y) = r + u_2 \]
-\[ i(x_1, x_2; y) = r + u_1 + u_2 + s, \]
-where \(i(X;Y)\) denotes the pointwise mutual information.
+$$ i(x_1; y) = r + u_1 $$
+$$ i(x_2; y) = r + u_2 $$
+$$ i(x_1, x_2; y) = r + u_1 + u_2 + s, $$
+where $i(X;Y)$ denotes the pointwise mutual information.
 
 <div align="center">
   <img src="figure/figure_1.jpg" width="50%">
   <p>Figure 1: Illustration of sample-level multimodal interactions, depicting redundancy ($r$), uniqueness ($u_1, u_2$), and synergy ($s$) as components of the total multimodal information $i(x_1, x_2; y)$.</p>
 </div>
 
-The unique determination of these interactions hinges on a pointwise definition of redundancy (\(r\)). Redundancy is derived using an information decomposition framework, as illustrated in Figure 2. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
+The unique determination of these interactions hinges on a pointwise definition of redundancy ($r$). Redundancy is derived using an information decomposition framework, as illustrated in Figure 2. This framework traces information flow through a lattice structure to identify redundant components, ensuring that information quantities monotonically decrease along the decomposition path.
 
 <div align="center">
   <img src="./figure/figure_2.jpg" alt="Figure 2: Redundancy Estimation Framework" width="80%">
@@ -36,7 +36,7 @@ The unique determination of these interactions hinges on a pointwise definition 
 
 Our approach estimates redundancy by leveraging information flow, ensuring monotonicity. Specifically, pointwise mutual information is decomposed into two parts satisfying the framework; redundancy is then determined for each part and combined to yield the overall redundancy interaction.
 
-For continuous distributions, interactions are quantified using KNIFE (Pichler et al., 2022) for efficient differential entropy estimation. This provides \(h_{\theta}(x)\) as an estimate for \(h(x)\) (the \(i^+\) component) and facilitates the estimation of the \(i^-\) component. This lightweight methodology is well-suited for sample-level analysis.
+For continuous distributions, interactions are quantified using KNIFE (Pichler et al., 2022) for efficient differential entropy estimation. This provides $h_{\theta}(x)$ as an estimate for $h(x)$ (the $i^+$ component) and facilitates the estimation of the $i^-$ component. This lightweight methodology is well-suited for sample-level analysis.
 
 ## Getting Started
 

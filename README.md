@@ -17,8 +17,8 @@ LSMI aims to decompose the task-relevant information from two modalities, $x_1$ 
 *   **Synergy ($s$)**: Information about $y$ that emerges only when $x_1$ and $x_2$ are considered jointly.
 
 These pointwise interactions are related by the following equations:
-$$i(x_1; y) = r + u_1$$
-$$i(x_2; y) = r + u_2$$
+$$i(x_1; y) = r + u_1,$$
+$$i(x_2; y) = r + u_2,$$
 $$i(x_1, x_2; y) = r + u_1 + u_2 + s,$$
 where $i(x;y)$ denotes the pointwise mutual information.
 
@@ -34,7 +34,7 @@ The unique determination of these interactions hinges on a pointwise definition 
   <p>Figure 2: The Redundancy Estimation Framework. Information flow is traced through a lattice structure to identify redundant components, ensuring monotonic decrease of information quantities along the decomposition path.</p>
 </div>
 
-Our approach estimates redundancy by leveraging information flow, ensuring monotonicity. Specifically, pointwise mutual information is decomposed into two parts satisfying the framework; redundancy is then determined for each part and combined to yield the overall redundancy interaction.
+Our approach estimates redundancy by leveraging information flow, ensuring monotonicity. Specifically, pointwise mutual information is decomposed into $i^+$ and $i^-$ for each modality, satisfying the framework; redundancy is then determined for each part and combined to yield the overall redundancy interaction.
 
 For continuous distributions, interactions are quantified using KNIFE (Pichler et al., 2022) for efficient differential entropy estimation. This provides $h_{\theta}(x)$ as an estimate for $h(x)$ (the $i^+$ component) and facilitates the estimation of the $i^-$ component. This lightweight methodology is well-suited for sample-level analysis.
 

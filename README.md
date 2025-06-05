@@ -17,10 +17,10 @@ LSMI aims to decompose the task-relevant information from two modalities, $x_1$ 
 *   **Synergy ($s$)**: Information about $y$ that emerges only when $x_1$ and $x_2$ are considered jointly.
 
 These pointwise interactions are related by the following equations:
-$$ i(x_1; y) = r + u_1 $$
-$$ i(x_2; y) = r + u_2 $$
-$$ i(x_1, x_2; y) = r + u_1 + u_2 + s, $$
-where $i(X;Y)$ denotes the pointwise mutual information.
+$$i(x_1; y) = r + u_1$$
+$$i(x_2; y) = r + u_2$$
+$$i(x_1, x_2; y) = r + u_1 + u_2 + s,$$
+where $i(x;y)$ denotes the pointwise mutual information.
 
 <div align="center">
   <img src="figure/figure_1.jpg" width="50%">

@@ -14,7 +14,9 @@ Here is the official PyTorch implementation of *Lightweight Sample-wise Multimod
 
 ## Methodology
 
-![Figure 1](figure/figure_1.pdf)
+<!-- ![Figure 1](figure/figure_1.pdf) -->
+<iframe src="figure/figure_1.pdf" width="80%" height="500px"></iframe>
+
  Illustrates multimodal interactions at the sample level, showcasing redundancy (\(r\)), uniqueness (\(u_1, u_2\)), and synergy (\(s\)) that constitute multimodal information \(i(x_1, x_2; y)\).
 
 LSMI aims to distinguish task-relevant information generated from two modalities, \(x_1, x_2\), with respect to a target \(y\), into:
@@ -94,7 +96,7 @@ Please clarify if these or other specific datasets and preprocessing are needed 
 
 ## Usage
 
-```python
+<!-- ```python -->
 
 
 

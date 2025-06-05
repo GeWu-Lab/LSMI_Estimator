@@ -1,0 +1,25 @@
+# General setup
+random_seed: 42
+result_path: "outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}"
+device: "cuda"  # "cuda" or "cpu"
+
+# Data loading parameters (for get_loader via estimator.py)
+batch_size: 32
+num_workers: 16 
+
+# Model architecture
+input_size_1: 10
+input_size_2: 10
+embed_size: 64
+n_classes: 2
+
+# Training epochs for sub-models
+num_epochs_discriminator: 30
+num_epochs_entropy_estimator: 30
+
+hydra:
+  run: 
+    dir: ${result_path}
+  sweep: 
+    dir: ${result_path}
+    subdir: ${hydra.job.num}
